@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+<form method="post" action="/offer_gift">
+    <select name="user">
+        {% for user in users %}
+        <option value="{{ user.id}}"> {{ user.username }} </option>
+        {% endfor %}
+    </select>
+    <input type="submit" value="This is the guy I want to spoil">
+</form>
+
+<form method="post" action="/offer_gift">
+{% for gift in gifts %}
+
+<div><p>
+    {% if current_user.who_offers_it %}
+    <b>{{ gift.name}} {{ gift.description }} </b>
+    {% else %}
+    <b>{{ gift.name}} {{ gift.description }} </b>
+    {% endif %}
+    <input type="submit" name="gift_{{ gift.id }}" value="Offer it"> </p> </div>
+    {% endfor %}
+</form>
+
+{% endblock%}

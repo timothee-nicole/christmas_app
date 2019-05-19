@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block app_content %}
+<form method="post" action="/list_gifts">
+{% for gift in gifts %}
+<div><p> <b>{{ gift.name}} </b>{{ gift.description }}<input type="submit" name="{{ gift.id }}" value="Delete"> </p> </div>
+    {% endfor %}
+</form>
+{% endblock%}
