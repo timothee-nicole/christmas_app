@@ -4,6 +4,8 @@ making a wishlist can ba daunting. In my family we use google sheets to share ou
 but it makes it hard to synchronize for the gift buying and might end up buying the same present as your cousin for your 
 grandmother :/. This is a draft of an app that would solve this problem.
 
+You can try this app here: http://my-christmas-app.herokuapp.com/
+
 # Screenshot
 ![Screenshot](screenshot.png)
 

@@ -1,6 +1,6 @@
 from app import app, db
 from app.models import User
-
+import os
 
 @app.shell_context_processor
 def make_shell_context():
@@ -8,4 +8,4 @@ def make_shell_context():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+    app.run(debug=True, host='0.0.0.0', port=os.environ.get('PORT'))
