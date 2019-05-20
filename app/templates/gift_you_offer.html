@@ -1,8 +1,30 @@
 {% extends "base.html" %}
 {% block app_content %}
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+          <tr>
+              <th scope="col">What</th>
+              <th scope="col">description</th>
+              <th scope="col">For who </th>
+              <th scope="col"> Delete it</th>
+          </tr>
+          </thead>
+        <tbody>
 <form method="post" action="/gifts_you_offer">
-{% for gift in gifts %}
-<div><p> <b>{{ gift.name}} </b>{{ gift.description }}<input type="submit" name="{{ gift.id }}" value="I no longer want to offer it"> </p> </div>
-    {% endfor %}
+    {% for gift in gifts %}
+    <tr>
+        <th scope="row">{{ gift.name}} {{ gift.name}} </th>
+        <td>{{ gift.description }} </td>
+        <td>{{ gift.username }} </td>
+        <td>
+            <input type="submit" name="{{ gift.id }}" value="I no longer want to offer it">
+        </td>
+    </tr>
+        {% endfor %}
 </form>
+        </tbody>
+    </table>
+</div>
+
 {% endblock%}

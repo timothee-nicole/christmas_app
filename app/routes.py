@@ -62,9 +62,11 @@ def new_gift():
     if form.validate_on_submit():
         gift = Gift(name=form.name.data,
                     description=form.description.data,
-                    user_id=current_user.id)
+                    user_id=current_user.id,
+                    username=current_user.username)
         db.session.add(gift)
         db.session.commit()
+        return redirect(url_for('new_gift'))
     return render_template('new_gift.html', title='New gift', form=form, gifts=gifts)
 
 
@@ -79,7 +81,7 @@ def list_gifts():
             return redirect('/list_gifts')
         db.session.delete(gift)
         db.session.commit()
-        return redirect('/list_gifts')
+        return redirect('/new_gift')
     return render_template('list_gifts.html', title='Home', gifts=gifts)
 
 
@@ -90,8 +92,9 @@ def offer_gift():
     if request.method == 'POST':
         if 'user' in request.form:
             id = request.form['user']
+            user = User.query.filter_by(id=id).one_or_none()
             gifts = [gift for gift in Gift.query.filter_by(user_id=id).all() if gift.who_offers_it is None]
-            return render_template('offer_gift.html', title='Home', users=users, gifts=gifts)
+            return render_template('offer_gift.html', title='Home', users=users, gifts=gifts, user=user)
         else:
             gift_id = [int(gift.replace('gift_', ''))
                        for gift in request.form.keys() if 'gift' in gift][0]

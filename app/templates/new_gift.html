@@ -2,9 +2,28 @@
 {% import 'bootstrap/wtf.html' as wtf %}
 {% block app_content %}
 <h1> List of gifts</h1>
+<div class="table-responsive">
+    <table class="table">
+          <thead>
+          <tr>
+           <th scope="col">What</th>
+           <th scope="col">description</th>
+            <th scope="col">Delete it </th>
+          </tr>
+          </thead>
+         <tbody>
+<form method="post" action="/list_gifts">
 {% for gift in gifts %}
-<div><p> <b>{{ gift.name}} </b>{{ gift.description }}</p> </div>
-    {% endfor %}
+
+    <th scope="row">{{ gift.name}} </th>
+        <td>{{ gift.description }}</td>
+        <td><input type="submit" name="{{ gift.id }}" value="Delete"> </td>
+    </tr>
+        {% endfor %}
+</form>
+         </tbody>
+    </table>
+</div>
     <h1>Add a new gift</h1>
 
     <form action="" method="post">
