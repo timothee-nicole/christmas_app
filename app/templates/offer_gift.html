@@ -2,6 +2,7 @@
 {% import 'bootstrap/wtf.html' as wtf %}
 
 {% block app_content %}
+{% if not gifts %}
 <form method="post" action="/offer_gift">
     <select name="user">
         {% for user in users %}
@@ -10,18 +11,29 @@
     </select>
     <input type="submit" value="This is the guy I want to spoil">
 </form>
-
+{% else %}
 <form method="post" action="/offer_gift">
+    <div class="table-responsive">
+    <table class="table">
+        <thead>
+          <tr>
+              <th scope="col">What</th>
+              <th scope="col">Description</th>
+              <th scope="col"> </th>
+          </tr>
+          </thead>
+        <tbody>
 {% for gift in gifts %}
-
-<div><p>
-    {% if current_user.who_offers_it %}
-    <b>{{ gift.name}} {{ gift.description }} </b>
-    {% else %}
-    <b>{{ gift.name}} {{ gift.description }} </b>
-    {% endif %}
-    <input type="submit" name="gift_{{ gift.id }}" value="Offer it"> </p> </div>
+ <tr>
+     <th scope="row">{{ gift.name}}</th>
+     <td>{{ gift.description }} </td>
+     <td><input type="submit" name="gift_{{ gift.id }}" value="Offer it"></td>
+ </tr>
     {% endfor %}
 </form>
-
+</tbody>
+    </table>
+</div>
+<a href="{{ url_for('offer_gift') }}">Spoil somebody else</a>
+{% endif %}
 {% endblock%}

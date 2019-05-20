@@ -15,10 +15,9 @@ You can try this app here: http://my-christmas-app.herokuapp.com/
 3. Access the website on `localhost:5000`  
 
 # TODO 
-- At the moment, the website is **NOT SECURE AT ALL** this should be improved
-- There is some code duplicates in `routes.md` > to be fixed
+- There is code duplicates in `routes.md` > to be fixed
 - ~~Add a docker file to deploy the app easily in a cloud~~ 
-- Improve the style of the site
+- The offer list doesn't refresh properly, should fix it with some javascript. 
 
 # Thanks
 A big thanks to the [Flask mega tutorial](https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-i-hello-world) 

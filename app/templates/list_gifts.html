@@ -2,7 +2,10 @@
 {% block app_content %}
 <form method="post" action="/list_gifts">
 {% for gift in gifts %}
-<div><p> <b>{{ gift.name}} </b>{{ gift.description }}<input type="submit" name="{{ gift.id }}" value="Delete"> </p> </div>
+<ul class="list-group"><ul class="list-group">
+
+    <li class="list-group-item"><b>{{ gift.name}} </b>{{ gift.description }}<input type="submit" name="{{ gift.id }}" value="Delete"> </li>
     {% endfor %}
+    </ul>
 </form>
 {% endblock%}
