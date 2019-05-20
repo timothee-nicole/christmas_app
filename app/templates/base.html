@@ -21,25 +21,26 @@
          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
              <li><a href="{{ url_for('index') }}">Home</a></li>
-        {% if current_user.is_anonymous %}
-            <li><a href="{{ url_for('login') }}">Login</a></li>
-        {% else %}
-            <li><a href="{{ url_for('logout') }}">Logout</a></li>
-        {% endif %}
+
         {% if not current_user.is_anonymous %}
             <li><a href="{{ url_for('new_gift') }}">Add gift to my wishlist</a></li>
         {% endif %}
         {% if not current_user.is_anonymous %}
-            <li><a href="{{ url_for('list_gifts') }}">My wishlist</a></li>
+            <li><a href="{{ url_for('list_gifts') }}">Spoil me (organise my wishlist)</a></li>
         {% endif %}
         {% if not current_user.is_anonymous %}
-            <li><a href="{{ url_for('offer_gift') }}">Offer a gift to my friend.d</a></li>
+            <li><a href="{{ url_for('offer_gift') }}">Offer a gift</a></li>
         {% endif %}
             {% if not current_user.is_anonymous %}
             <li><a href="{{ url_for('gift_you_offer') }}">Which gifts did I choose to offer?</a></li>
         {% endif %}
         {% if current_user.is_anonymous %}
             <li><a href="{{ url_for('register') }}">Register</a></li>
+        {% endif %}
+        {% if current_user.is_anonymous %}
+            <li><a href="{{ url_for('login') }}">Login</a></li>
+        {% else %}
+            <li><a href="{{ url_for('logout') }}">Logout</a></li>
         {% endif %}
         </ul>
          </div>

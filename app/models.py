@@ -24,9 +24,10 @@ class Gift(db.Model):
     name = db.Column(db.String(140))
     description = db.Column(db.String(140))
     user_id = db.Column(db.String(140))
-    who_offers_it = db.Column(db.Integer, default=-1)
+    who_offers_it = db.Column(db.Integer)
     def __repr__(self):
         return '<Gift {}>'.format(self.name)
+
 
 @login.user_loader
 def load_user(id):

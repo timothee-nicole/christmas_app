@@ -5,13 +5,14 @@ from app.models import User, Gift
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
 from app.forms import RegistrationForm, NewGiftForm
-from app import db
+from app import db, htpasswd
 
 
 @app.route('/')
 @app.route('/index')
 def index():
     return render_template('index.html', title='Home')
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -38,7 +39,8 @@ def logout():
 
 
 @app.route('/register', methods=['GET', 'POST'])
-def register():
+@htpasswd.required
+def register(user=None):
     if current_user.is_authenticated:
         return redirect(url_for('index'))
     form = RegistrationForm()
@@ -65,12 +67,13 @@ def new_gift():
         db.session.commit()
     return render_template('new_gift.html', title='New gift', form=form, gifts=gifts)
 
+
 @app.route('/list_gifts', methods=['GET', 'POST'])
 @login_required
 def list_gifts():
     gifts = Gift.query.filter_by(user_id=current_user.id).all()
     if request.method == 'POST':
-        id = int(list( request.form.keys())[0])
+        id = int(list(request.form.keys())[0])
         gift = Gift.query.filter_by(id=id).one_or_none()
         if gift is None:
             return redirect('/list_gifts')
@@ -79,11 +82,11 @@ def list_gifts():
         return redirect('/list_gifts')
     return render_template('list_gifts.html', title='Home', gifts=gifts)
 
+
 @app.route('/offer_gift', methods=['GET', 'POST'])
 @login_required
 def offer_gift():
     users = [user for user in User.query.distinct(User.username) if user.id != current_user.id]
-    print(users)
     if request.method == 'POST':
         if 'user' in request.form:
             id = request.form['user']
@@ -97,12 +100,12 @@ def offer_gift():
             return redirect('/gifts_you_offer')
     return render_template('offer_gift.html', title='Home', users=users)
 
+
 @app.route('/gifts_you_offer', methods=['GET', 'POST'])
 @login_required
 def gift_you_offer():
     gifts = Gift.query.filter_by(who_offers_it=current_user.id).all()
     if request.method == 'POST':
-        print(request.form.keys())
         gift_id = [int(gift.replace('gift_', ''))
                    for gift in request.form.keys()][0]
         gift_to_change = Gift.query.filter_by(id=gift_id).first()
