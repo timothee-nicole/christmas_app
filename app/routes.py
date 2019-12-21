@@ -1,12 +1,27 @@
 from app import app
 from flask import render_template, flash, redirect, request, url_for
 from app.forms import LoginForm
-from app.models import User, Gift
+from app.models import Users, Gift
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
 from app.forms import RegistrationForm, NewGiftForm
-from app import db, htpasswd
+from app import db
+import sqlalchemy
+from sqlalchemy.sql.expression import cast
 
+
+def login_process(form, next_page=None):
+    # check if the user exists and the password
+    user = Users.query.filter_by(username=form.username.data).first()
+    if user is None or not user.check_password(form.password.data):
+        flash('Invalid username or password')
+        return redirect('login')
+    # log the user
+    login_user(user, remember=form.remember_me.data)
+
+    if not next_page or url_parse(next_page).netloc != '':
+        next_page = 'index'
+    return redirect(next_page)
 
 @app.route('/')
 @app.route('/index')
@@ -20,15 +35,8 @@ def login():
         return redirect('index')
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(username=form.username.data).first()
-        if user is None or not user.check_password(form.password.data):
-            flash('Invalid username or password')
-            return redirect('login')
-        login_user(user, remember=form.remember_me.data)
         next_page = request.args.get('next')
-        if not next_page or url_parse(next_page).netloc != '':
-            next_page = 'index'
-        return redirect(next_page)
+        login_process(form, next_page)
     return render_template('login.html', title='Sign In', form=form)
 
 
@@ -39,13 +47,12 @@ def logout():
 
 
 @app.route('/register', methods=['GET', 'POST'])
-# @htpasswd.required
 def register(user=None):
     if current_user.is_authenticated:
         return redirect(url_for('index'))
     form = RegistrationForm()
     if form.validate_on_submit():
-        user = User(username=form.username.data, email=form.email.data)
+        user = Users(username=form.username.data, email=form.email.data)
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
@@ -58,7 +65,7 @@ def register(user=None):
 @login_required
 def new_gift():
     form = NewGiftForm()
-    gifts = Gift.query.filter_by(user_id=current_user.id).all()
+    gifts = Gift.query.filter_by(user_id=cast(current_user.id, sqlalchemy.Integer)).all()
     if form.validate_on_submit():
         gift = Gift(name=form.name.data,
                     description=form.description.data,
@@ -76,7 +83,7 @@ def list_gifts():
     gifts = Gift.query.filter_by(user_id=current_user.id).all()
     if request.method == 'POST':
         id = int(list(request.form.keys())[0])
-        gift = Gift.query.filter_by(id=id).one_or_none()
+        gift = Gift.query.filter_by(id=(cast(id, sqlalchemy.Integer))).one_or_none()
         if gift is None:
             return redirect('/list_gifts')
         db.session.delete(gift)
@@ -88,12 +95,12 @@ def list_gifts():
 @app.route('/offer_gift', methods=['GET', 'POST'])
 @login_required
 def offer_gift():
-    users = [user for user in User.query.distinct(User.username) if user.id != current_user.id]
+    users = [user for user in Users.query.distinct(Users.username) if user.id != current_user.id]
     if request.method == 'POST':
         if 'user' in request.form:
             id = request.form['user']
-            user = User.query.filter_by(id=id).one_or_none()
-            gifts = [gift for gift in Gift.query.filter_by(user_id=id).all() if gift.who_offers_it is None]
+            user = Users.query.filter_by(id=id).one_or_none()
+            gifts = [gift for gift in Gift.query.filter_by(user_id=(cast(id, sqlalchemy.Integer))).all() if gift.who_offers_it is None]
             return render_template('offer_gift.html', title='Home', users=users, gifts=gifts, user=user)
         else:
             gift_id = [int(gift.replace('gift_', ''))

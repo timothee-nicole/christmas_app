@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 {% import 'bootstrap/wtf.html' as wtf %}
-
 {% block app_content %}
 {% if not gifts %}
+ <h1>Who do you want to offer a gift to ?</h1>
 <form method="post" action="/offer_gift">
     <select name="user">
         {% for user in users %}
@@ -12,6 +12,7 @@
     <input type="submit" value="This is the guy I want to spoil">
 </form>
 {% else %}
+<h1>Spoiling {{user.username}}</h1>
 <form method="post" action="/offer_gift">
     <div class="table-responsive">
     <table class="table">
