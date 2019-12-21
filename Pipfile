@@ -17,6 +17,7 @@ flask-dotenv = "*"
 python-dotenv = "*"
 psycopg2-binary = "*"
 jupyter = "*"
+gunicorn = "*"
 
 [requires]
 python_version = "3.7"
