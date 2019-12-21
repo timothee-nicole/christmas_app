@@ -1,5 +1,5 @@
 from app import db
-from app.models import User
+from app.models import Users
 db.create_all()
 # user1 = User(username='robin1', email='robin@ronin.com')
 # user2 = User(username='robin2', email='robin2@ronin.com')

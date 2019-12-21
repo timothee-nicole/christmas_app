@@ -16,7 +16,6 @@ flask-wtf = "*"
 flask-dotenv = "*"
 python-dotenv = "*"
 psycopg2-binary = "*"
-jupyter = "*"
 gunicorn = "*"
 
 [requires]

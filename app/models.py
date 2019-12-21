@@ -3,7 +3,7 @@ from flask_login import UserMixin
 from app import login
 from app import db
 
-class User(UserMixin, db.Model):
+class Users(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
@@ -17,13 +17,14 @@ class User(UserMixin, db.Model):
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+db.create_all()
 
 
 class Gift(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(140))
     description = db.Column(db.String(140))
-    user_id = db.Column(db.String(140))
+    user_id = db.Column(db.Integer)
     who_offers_it = db.Column(db.Integer)
     username = db.Column(db.String(140), db.ForeignKey("user.username"))
 
@@ -33,4 +34,6 @@ class Gift(db.Model):
 
 @login.user_loader
 def load_user(id):
-    return User.query.get(int(id))
+    return Users.query.get(int(id))
+
+db.create_all()
