@@ -25,7 +25,7 @@ class Gift(db.Model):
     description = db.Column(db.String(140))
     user_id = db.Column(db.String(140))
     who_offers_it = db.Column(db.Integer)
-    username = db.Column(db.String, db.ForeignKey("user.username"))
+    username = db.Column(db.String(140), db.ForeignKey("user.username"))
 
     def __repr__(self):
         return '<Gift {}>'.format(self.name)
