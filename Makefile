@@ -6,3 +6,6 @@ docker-build:
 
 docker-run: 
 	docker run -p 5000:5000 christmas-list
+
+make deploy:
+    git push heroku master
