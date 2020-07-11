@@ -1,7 +1,8 @@
-# What does this app do
-when the moment of Christmas come, for a family where people are far away from each other, making a wishlist can be daunting. In my family, we use google sheets to share our wishlists across continents but it makes it hard to synchronize for the gift buying and might end up buying the same present as your cousin for your grandmother:/. This is a draft of an app that would solve this problem.
+# Outdated version of a wishlist platform
+An updated version of this app is available here https://github.com/robinicole/wishlist_app_revival
 
-You can try this app here: http://my-christmas-app.herokuapp.com/
+# What does this app hen the moment of Christmas come, for a family where people are far away from each other, making a wishlist can be daunting. In my family, we use google sheets to share our wishlists across continents but it makes it hard to synchronize for the gift buying and might end up buying the same present as your cousin for your grandmother:/. This is a draft of an app that would solve this problem.
+
 
 # Screenshot
 ![Screenshot](screenshot.png)
